@@ -332,6 +332,15 @@ backend_no_relay = Multiple(
     )
 )
 run = _run.configure(backend=backend_all)
+run_relay = _run.configure(
+    backend=Multiple(
+        pytest.param(
+            ("relay", {"target": "cpu", "device_id": 0}),
+            id="relay-cpu",
+            marks=pytest.mark.relay,
+        ),
+    )
+)
 run_relay_debug = _run.configure(
     backend=Multiple(
         pytest.param(
