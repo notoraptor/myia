@@ -12,11 +12,7 @@ activate_frontend("pytorch")
 
 @eqtest.register
 def eqtest(t1: torch.Tensor, t2, rtol=1e-5, atol=1e-8, **kwargs):
-    """ New version of eqtest using np.testing.assert_allclose.
-    If comparison fails, this version will raise an exception
-    and display a more informative log if comparison fail,
-    especially max absolute and relative difference.
-    """
+    """ New version of eqtest using np.testing.assert_allclose. """
     np.testing.assert_allclose(
         t1.detach().numpy(),
         t2.detach().numpy(),
