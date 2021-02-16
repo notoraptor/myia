@@ -942,6 +942,7 @@ __all__ = [
     "AbstractType",
     "AbstractUnion",
     "AbstractValue",
+    "AbstractWrapper",
     "Function",
     "GraphFunction",
     "MacroFunction",

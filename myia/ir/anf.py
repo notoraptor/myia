@@ -511,6 +511,9 @@ class ANFNode:
 
         return label(self)
 
+    def __repr__(self):
+        return str(self)
+
     ##########
     # Checks #
     ##########
@@ -570,14 +573,6 @@ class Apply(ANFNode):
         app.abstract = self.abstract
         return app
 
-    def __repr__(self) -> str:
-        return repr_(
-            self,
-            name=self.debug.debug_name,
-            inputs=self.inputs,
-            graph=self.graph,
-        )
-
 
 class Parameter(ANFNode):
     """A parameter to a function.
@@ -595,9 +590,6 @@ class Parameter(ANFNode):
     def is_parameter(self):
         """Return whether self is a Parameter."""
         return True
-
-    def __repr__(self) -> str:
-        return repr_(self, name=self.debug.debug_name, graph=self.graph)
 
 
 class Constant(ANFNode):
@@ -634,9 +626,6 @@ class Constant(ANFNode):
     def __str__(self) -> str:
         return f"_constant:{self.value}"
 
-    def __repr__(self) -> str:
-        return repr_(self, name=self.debug.debug_name, value=self.value)
-
 
 class Special(ANFNode):
     """A special node.
@@ -661,9 +650,6 @@ class Special(ANFNode):
 
     def __str__(self) -> str:  # pragma: no cover
         return str(self.special)
-
-    def __repr__(self) -> str:  # pragma: no cover
-        return repr_(self, name=self.debug.debug_name, special=self.special)
 
 
 class VarNode(Special):

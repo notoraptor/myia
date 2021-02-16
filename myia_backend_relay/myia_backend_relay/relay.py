@@ -823,7 +823,7 @@ class CompileGraph:
                     self.graph_map[g] = relay.GlobalVar("main")
                 else:
                     # Mangle user names
-                    name = "_" + g.debug.debug_name
+                    name = f"_{g.debug.id}"
                     self.graph_map[g] = relay.GlobalVar(name)
 
         for g in self.graph_map.keys():
@@ -845,7 +845,7 @@ class CompileGraph:
     def on_parameter(self, node):
         """Convert a parameter node."""
         return relay.var(
-            node.debug.debug_name, type_annotation=to_relay_type(node.abstract)
+            f"_{node.debug.id}", type_annotation=to_relay_type(node.abstract)
         )
 
     def on_apply(self, node):

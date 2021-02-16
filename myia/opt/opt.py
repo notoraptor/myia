@@ -226,7 +226,7 @@ class LocalPassOptimizer:
                 args = dict(opt=transformer, node=n, manager=mng, profile=False)
                 with tracer("opt", **args) as tr:
                     tr.set_results(success=False, **args)
-                    with About(n.debug, "opt", transformer.name):
+                    with About(n.debug, "opt", transform=transformer.name):
                         new = transformer(resources, n)
                     if new is not None and new is not n:
                         tracer().emit_match(**args, new_node=new)

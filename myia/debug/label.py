@@ -70,8 +70,8 @@ class NodeLabeler:
             if node.name:
                 return node.name, []
             elif node.about:
-                root_name, relations = self._root_name(node.about.debug, force)
-                relations.append(node.about.relation)
+                root_name, relations = self._root_name(node.about, force)
+                relations.append(node.relation)
                 return root_name, relations
             elif force:
                 return self.default_name(node), []
@@ -185,7 +185,6 @@ short_labeler = NodeLabeler(relation_symbols=short_relation_symbols)
 
 default_labeler = NodeLabeler(
     relation_symbols=short_relation_symbols,
-    default_name=lambda dbg: dbg.debug_name,
 )
 
 

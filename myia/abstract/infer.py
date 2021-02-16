@@ -220,7 +220,7 @@ class InferenceEngine(metaclass=OvldMC):
         if not new.node.debug.about:
             # This will link the old node's debug info to the new node, if
             # necessary.
-            new.node.debug.about = About(orig.node.debug, "reroute")
+            new.node.debug.set(about=orig.node.debug, relation="reroute")
         self.reference_map[orig] = self.new_reference_map[orig] = new
         return await self.get_inferred(new)
 

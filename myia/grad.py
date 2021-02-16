@@ -527,8 +527,7 @@ def _make_grad_transform(prim, fn, flags):
 
     bprop = clone(standard_parse(fn))
     bprop.flags.update(default_grad_flags)
-    bprop.debug.name = None
-    bprop.debug.about = About(info, "grad_bprop")  # type: ignore
+    bprop.debug.set(name=None, about=info, relation="grad_bprop")  # type: ignore
     if bprop.output.match(_is_raise):
         pass
     elif bprop.output.match(_is_mktuple_resolve) or bprop.output.match(

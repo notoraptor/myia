@@ -593,6 +593,10 @@ class Parser:
         """Process strings: `"a"`, `'hello world'`, etc."""
         return Constant(node.s)
 
+    def process_Constant(self, block: "Block", node: ast.Constant) -> ANFNode:
+        """Process constants: `1`, `2.5`, `"a"`, `'hello world'`, etc."""
+        return Constant(node.value)
+
     def process_Call(self, block: "Block", node: ast.Call) -> ANFNode:
         """Process function calls: `f(x)`, etc."""
         func = self.process_node(block, node.func)
@@ -923,10 +927,9 @@ class Parser:
         # We link the variable name to the target
         self._assign(body_block, node.target, target)
         # We set some debug data on all iterator variables
-        it_debug_data = About(target.debug, "iterator")
-        it.debug.about = it_debug_data
-        it2.debug.about = it_debug_data
-        init.debug.about = it_debug_data
+        it.debug.set(about=target.debug, relation="iterator")
+        it2.debug.set(about=target.debug, relation="iterator")
+        init.debug.set(about=target.debug, relation="iterator")
 
         # This is the block after for
         with About(block.graph.debug, "for_after"):
