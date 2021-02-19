@@ -9,7 +9,7 @@ description = "Pytorch backend for myia"
 authors = ["Mila development team"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 numpy = "^1.16"
 torch = "^1.7.1"
 torchvision = "^0.8.2"

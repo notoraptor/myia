@@ -22,8 +22,8 @@ python-versions = ">=3.7"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.7"
-content-hash = "901f462d134c5080bc4fa8e888315639891f4cfb59ece776ec7bc9d6bc5f1c7d"
+python-versions = "^3.8"
+content-hash = "6066361e57e7c6826c3e984941746176caeac8f85f3c0d7da692e5c91f1a8b86"
 
 [metadata.files]
 isort = [

@@ -9,7 +9,7 @@ description = "Relay backend for myia"
 authors = ["Mila development team"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 numpy = "^1.16"
 scipy = "^1.5"
 antlr4-python3-runtime = "4.7.2"

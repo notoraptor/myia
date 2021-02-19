@@ -63,8 +63,8 @@ numpy = ">=1.16.5"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.7"
-content-hash = "86aab90ad103063a24b380362d68407a80f37cf06ef2a88ecc088d2604a60959"
+python-versions = "^3.8"
+content-hash = "34d8ffce4a94f67802cb5a566a766bee053a5116cfa5acc92014e4287375ae4d"
 
 [metadata.files]
 antlr4-python3-runtime = [

@@ -66,8 +66,8 @@ python-versions = "*"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.7"
-content-hash = "31d4ea0d230e39a7bbf1e312b9d54d809c70d067ad4eaefa7cb642b3c22a9be3"
+python-versions = "^3.8"
+content-hash = "3d90e5b3462f3de504f8358e91185d096b4a910975d249a4df0ab910b418fb70"
 
 [metadata.files]
 isort = [

@@ -1,5 +1,5 @@
 dependencies:
-- python>=3.7,<4.0
+- python>=3.8,<4.0
 - numpy>=1.16,<2.0
 - scipy>=1.5,<2.0
 - decorator>=4,<5
