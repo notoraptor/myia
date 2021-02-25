@@ -1163,7 +1163,12 @@ def expand_J(resources, node, equiv):
         return None
 
     vfn = node.abstract
-    newg = resources.incorporate(newg, vfn.args, vfn.output)
+    try:
+        newg = resources.incorporate(newg, vfn.args, vfn.output)
+    except AssertionError:
+        import snek
+        snek.interact()
+        raise
 
     if isinstance(arg, Graph):
         arg.transforms["grad"] = newg
