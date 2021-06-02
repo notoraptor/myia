@@ -29,6 +29,7 @@ class Graph:
         self.posonly = 0
         self.kwonly = 0
         self.debug = make_debug(obj=self)
+        self.specializations = {}
 
     @property
     def output(self):
@@ -103,6 +104,15 @@ class Graph:
         res.defaults = self.defaults
         res.kwonly = self.kwonly
         return res
+
+    def specialize(self, sig):
+        """Return a Graph specialized for a type signature."""
+        if sig not in self.specializations:
+            cl = self.clone()
+            for param, typ in zip(cl.parameters, sig):
+                param.abstract = typ
+            self.specializations[sig] = cl
+        return self.specializations[sig]
 
     def replace_node(self, node, lbl, repl, *, recursive=True):
         """Replace a node by another in this graph.
