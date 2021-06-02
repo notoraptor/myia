@@ -6,6 +6,8 @@ from myia import basics
 from myia.utils import Named, myia_hrepr_resources
 from myia.utils.info import clone_debug, make_debug
 
+from ..utils.info import about
+
 FN = Named("$fn")
 SEQ = Named("$seq")
 
@@ -81,12 +83,14 @@ class Graph:
     def clone(self, objmap=None):
         """Make a copy of this graph."""
         if objmap is None:
-            res = Graph(self.parent)
+            with about(self, "clone"):
+                res = Graph(self.parent)
             objmap = {self: res}
         elif self in objmap:
             return objmap[self]
         else:
-            res = Graph(parent=objmap.get(self.parent, self.parent))
+            with about(self, "clone"):
+                res = Graph(parent=objmap.get(self.parent, self.parent))
             objmap[self] = res
         res.parameters = [p.clone(objmap) for p in self.parameters]
         res.flags = self.flags.copy()
@@ -98,7 +102,6 @@ class Graph:
         res.kwargs = self.kwargs.clone(objmap) if self.kwargs else self.kwargs
         res.defaults = self.defaults
         res.kwonly = self.kwonly
-        res.debug = clone_debug(self.debug, objmap)
         return res
 
     def replace_node(self, node, lbl, repl, *, recursive=True):
