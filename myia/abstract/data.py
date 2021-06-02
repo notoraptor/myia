@@ -268,6 +268,25 @@ class AbstractUnion(AbstractValue):
             )
 
 
+##################
+# Function types #
+##################
+
+
+class AbstractFunction(AbstractStructure):
+    """Represents a simple function type."""
+
+    @property
+    def args(self):
+        """Return the argument types."""
+        return self.elements[:-1]
+
+    @property
+    def out(self):
+        """Return the output type."""
+        return self.elements[-1]
+
+
 ####################
 # Incomplete types #
 ####################
@@ -318,7 +337,7 @@ class CanonGeneric(GenericBase):
 
 
 class Placeholder(GenericBase):
-    """Subtype of GenericBase used as placeholders when processing a node.
+    """Subtype of Generic used as placeholders when processing a node.
 
     Placeholders are never equal to each other.
     """
