@@ -1,6 +1,7 @@
 import operator
 import types
 from collections import defaultdict
+from dataclasses import dataclass
 
 from .. import basics
 from ..abstract import data, utils as autils
@@ -14,16 +15,13 @@ from .algo import Require, RequireAll, Unify, infer
 X = data.Generic("x")
 
 
-class AbstractInferrer(data.AbstractValue):
-    """Encapsulates an arbitrary inference function."""
+@dataclass(frozen=True)
+class InferenceFunction:
+    fn: types.FunctionType
 
-    def __init__(self, inferrer, tracks):
-        super().__init__(tracks)
-        self.inferrer = inferrer
 
-    def __eqkey__(self):
-        v = data.AbstractValue.__eqkey__(self)
-        return data.AttrEK(self, (v, "inferrer"))
+def inference_function(fn):
+    return data.AbstractAtom({"interface": InferenceFunction(fn)})
 
 
 class SpecializedGraph:
@@ -74,7 +72,7 @@ def signature(*arg_types, ret):
             autils.unify(expected_type, inp_type, U=unif)
         return autils.reify(return_type, unif=unif.canon)
 
-    return AbstractInferrer(_infer, tracks={})
+    return inference_function(_infer)
 
 
 class Handler:
@@ -89,8 +87,8 @@ inferrers = {
     operator.le: signature(X, X, ret=bool),
     operator.truth: signature(X, ret=bool),
     basics.return_: signature(X, ret=X),
-    basics.resolve: AbstractInferrer(resolve, tracks={}),
-    basics.user_switch: AbstractInferrer(user_switch, tracks={}),
+    basics.resolve: inference_function(resolve),
+    basics.user_switch: inference_function(user_switch),
     type: signature(
         X,
         ret=data.AbstractStructure([X], tracks={"interface": type}),
@@ -125,7 +123,7 @@ class InferenceEngine:
         if node.is_constant(Graph):
             spc = SpecializedGraph(node.value)
             self.replacements[None][None, None, node] = Constant(spc)
-            return AbstractInferrer(spc, tracks={})
+            return inference_function(spc)
 
         elif node.is_constant() and node.value in inferrers:
             return inferrers[node.value]
@@ -135,7 +133,7 @@ class InferenceEngine:
                 spc = SpecializedGraph(parse(node.value))
                 ct = Constant(spc)
             self.replacements[None][None, None, node] = ct
-            return AbstractInferrer(spc, tracks={})
+            return inference_function(spc)
 
         elif node.is_constant():
             value = node.value
@@ -154,15 +152,15 @@ class InferenceEngine:
 
             #     return autils.reify(fn.out, unif=unif.canon)
 
-            if isinstance(fn, AbstractInferrer):
-                inf = fn.inferrer
+            if isinstance(fn.tracks.interface, InferenceFunction):
+                inf = fn.tracks.interface.fn
                 if isinstance(inf, SpecializedGraph):
                     arg_types = yield RequireAll(*node.inputs)
                     inf.commit(arg_types)
                     res = yield Require(inf.graph.return_)
                     return res
                 else:
-                    res = fn.inferrer(node.inputs, unif)
+                    res = inf(node.inputs, unif)
                     if isinstance(res, types.GeneratorType):
                         curr = None
                         try:
