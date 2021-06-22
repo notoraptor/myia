@@ -385,7 +385,7 @@ class Apply(Node):
             return self
         res = Apply(objmap[self.graph])
         objmap[self] = res
-        res.edges = _edgemap(e.clone(objmap) for e in self.edges.values(), res)
+        res.edges = _edgemap((e.clone(objmap) for e in self.edges.values()), res)
         res._copy_fields(self, objmap)
         return res
 
