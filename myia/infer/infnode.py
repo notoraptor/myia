@@ -206,12 +206,12 @@ def infer_graph(graph, input_types):
     for gx, repl in eng.replacements.items():
         if gx is not None:
             repl = repl | eng.replacements[None]
-            repl = {
-                a: Constant(b.value.graph)
-                if b.is_constant(SpecializedGraph)
-                else b
-                for a, b in repl.items()
-            }
-            gx.replace(repl, iterate=True)
+            for a, b in repl.items():
+                origin, lbl, to_replace = a
+                assert origin is None
+                assert lbl is None
+                if b.is_constant(SpecializedGraph):
+                    b = Constant(b.value.graph)
+                gx.replace_node(to_replace, None, b)
 
     return g, res
