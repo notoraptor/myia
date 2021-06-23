@@ -337,7 +337,7 @@ class CanonGeneric(GenericBase):
 
 
 class Placeholder(GenericBase):
-    """Subtype of Generic used as placeholders when processing a node.
+    """Subtype of GenericBase used as placeholders when processing a node.
 
     Placeholders are never equal to each other.
     """

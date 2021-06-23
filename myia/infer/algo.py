@@ -29,7 +29,7 @@ class Scheduler:
         If all the request's nodes have a value, the payload and
         request output will be appended to the todo list.
         """
-        if request.satisfy(node, self.satisfied[node]):
+        if request.satisfy(node, value):
             self.todo.append((request.payload, request.output))
 
     def require(self, request):
@@ -178,7 +178,7 @@ class Inferrer:
         If the node was not already inferred, set the inference result to a
         placeholder and call `self.engine(node)` to start the inference.
         """
-        existing = getattr(node, "abstract", None)
+        existing = node.abstract
         if existing is None:
             node.abstract = data.Placeholder()
             unif = autils.Unificator()

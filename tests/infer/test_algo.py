@@ -1,5 +1,4 @@
 import types
-from dataclasses import dataclass
 from types import GeneratorType
 
 import pytest
@@ -13,30 +12,40 @@ from myia.infer.algo import Merge, Require, RequireAll, Unify, infer
 from ..common import A, Un
 
 
-@dataclass(eq=False)
-class Parameter:
-    idx: int
-    abstract: object = None
+class HasAbstract:
+    def __init__(self, abstract=None):
+        self.abstract = abstract
 
 
-@dataclass(eq=False)
-class Leaf:
-    name: str
-    type: object
+class Parameter(HasAbstract):
+    def __init__(self, idx, abstract=None):
+        self.idx = idx
+        super().__init__(abstract)
+
+
+class Leaf(HasAbstract):
+    def __init__(self, name, type):
+        self.name = name
+        self.type = type
+        super().__init__()
 
     def infer(self, unif):
         return self.type
 
 
-@dataclass(eq=False)
-class Binary:
-    a: object
-    b: object
+class Binary(HasAbstract):
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+        super().__init__()
 
 
-@dataclass(eq=False)
-class Ternary(Binary):
-    c: object
+class Ternary(HasAbstract):
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+        super().__init__()
 
 
 class First(Binary):
@@ -59,9 +68,10 @@ class CombineU(Binary):
         return (yield Unify(self.a, self.b))
 
 
-class Tuple:
+class Tuple(HasAbstract):
     def __init__(self, *elements):
         self.elements = elements
+        super().__init__()
 
     def infer(self, unif):
         elems = yield RequireAll(*self.elements)
@@ -90,10 +100,11 @@ class Switch(Ternary):
 #             return (yield Unify(self.b, self.c))
 
 
-class CallUnify:
+class CallUnify(HasAbstract):
     def __init__(self, op, *args):
         self.op = op
         self.args = list(args)
+        super().__init__()
 
     def infer(self, unif):
         op = self.op
@@ -105,10 +116,11 @@ class CallUnify:
         return autils.reify(self.op.out, unif=unif.canon)
 
 
-class Expression:
+class Expression(HasAbstract):
     def __init__(self, expr):
         self.expr = expr
         self.cache = {}
+        super().__init__()
 
     def specialize(self, args):
         if args not in self.cache:
@@ -137,10 +149,11 @@ def cp(self, call: CallUnify, args):  # noqa: F811
     return CallUnify(call.op, *[self(x, args) for x in call.args])
 
 
-class CallExpr:
+class CallExpr(HasAbstract):
     def __init__(self, expr, *args):
         self.expr = expr
         self.args = args
+        super().__init__()
 
     def infer(self, unif):
         args = yield RequireAll(*self.args)
