@@ -200,10 +200,15 @@ def infer_graph(graph, input_types):
     g = graph.specialize(input_types)
     eng.replacements[g] = {}
     res = infer(eng, g.return_)
+    # Allocate None entry before iterating on replacements.
+    # TODO Remove ?
+    _ = eng.replacements[None]
 
     for gx, repl in eng.replacements.items():
         if gx is not None:
-            repl = repl | eng.replacements[None]
+            # Support older Python versions.
+            # TODO remove ?
+            repl = {**repl, **eng.replacements[None]}
             for a, b in repl.items():
                 origin, lbl, to_replace = a
                 assert origin is None
