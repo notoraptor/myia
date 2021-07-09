@@ -46,7 +46,12 @@ def infer(*args, result=None):
 
     Arguments:
         args: The argspec for the function.
-        result: The expected result, or an exception subclass.
+        result: The expected result, or an exception subclass or instance.
+            If result is an exception subclass, test is expected to fail
+            by raising given exception.
+            If result is an exception instance, test is expected to fail
+            by raising given exception type, and str(result) will be used
+            as a regex expression to search in raised exception message.
 
     Returns:
         callable: a decorator that will receive a function to test
