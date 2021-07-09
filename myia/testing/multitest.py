@@ -1,6 +1,5 @@
-"""Common testing utilities."""
+"""MUlti-testing utilities."""
 from collections import Counter
-from typing import List
 
 import pytest
 
@@ -8,6 +7,7 @@ from myia.abstract.data import AbstractValue
 from myia.infer.infnode import infer_graph
 from myia.parser import parse
 from myia.utils.info import enable_debug
+from myia.testing.common import A
 
 
 def mt(*testers):
@@ -41,7 +41,7 @@ def mt(*testers):
     return deco
 
 
-def infer(*args: List[AbstractValue], result: AbstractValue = None):
+def infer(*args, result=None):
     """Inference tester.
 
     Arguments:
@@ -52,6 +52,10 @@ def infer(*args: List[AbstractValue], result: AbstractValue = None):
         callable: a decorator that will receive a function to test
             and must returns the final wrapped function to run.
     """
+    args = tuple(
+        arg if isinstance(arg, AbstractValue) else A(arg) for arg in args
+    )
+    result = result if isinstance(result, AbstractValue) else A(result)
 
     def deco(fn):
         def wrapper(*a, **k):

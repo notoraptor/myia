@@ -12,7 +12,8 @@ from myia.abstract.map import (
 )
 from myia.utils.intern import intern
 
-from ..common import A, Un, one_test_per_assert
+from myia.testing.common import A, Un
+from ..common import one_test_per_assert
 
 
 @abstract_any.variant

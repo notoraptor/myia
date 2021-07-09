@@ -10,7 +10,8 @@ from myia.abstract.utils import (
     unify,
 )
 
-from ..common import A, Un, one_test_per_assert
+from myia.testing.common import A, Un
+from ..common import one_test_per_assert
 
 cg0 = data.CanonGeneric(0)
 cg1 = data.CanonGeneric(1)

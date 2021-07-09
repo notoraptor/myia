@@ -9,7 +9,7 @@ from myia.abstract.data import ANYTHING, Placeholder
 from myia.abstract.map import MapError
 from myia.infer.algo import Merge, Require, RequireAll, Unify, infer
 
-from ..common import A, Un
+from myia.testing.common import A, Un
 
 
 class HasAbstract:
