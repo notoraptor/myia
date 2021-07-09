@@ -10,9 +10,9 @@ from myia.abstract.map import (
     abstract_map,
     abstract_map2,
 )
+from myia.testing.common import A, Un
 from myia.utils.intern import intern
 
-from myia.testing.common import A, Un
 from ..common import one_test_per_assert
 
 

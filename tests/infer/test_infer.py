@@ -1,7 +1,6 @@
-from myia.testing.multitest import infer, mt
-
-from myia.testing.common import A
 from myia.abstract.map import MapError
+from myia.testing.common import A
+from myia.testing.multitest import infer, mt
 
 
 # Test `mt`

@@ -9,8 +9,8 @@ from myia.abstract.utils import (
     uncanonical,
     unify,
 )
-
 from myia.testing.common import A, Un
+
 from ..common import one_test_per_assert
 
 cg0 = data.CanonGeneric(0)

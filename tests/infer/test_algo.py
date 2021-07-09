@@ -8,7 +8,6 @@ from myia.abstract import data, utils as autils
 from myia.abstract.data import ANYTHING, Placeholder
 from myia.abstract.map import MapError
 from myia.infer.algo import Merge, Require, RequireAll, Unify, infer
-
 from myia.testing.common import A, Un
 
 

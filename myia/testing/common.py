@@ -1,7 +1,8 @@
 """Common testing utilities."""
 from ovld import ovld
-from myia.abstract.to_abstract import precise_abstract
+
 from myia.abstract import data
+from myia.abstract.to_abstract import precise_abstract
 
 
 @precise_abstract.variant

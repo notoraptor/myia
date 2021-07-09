@@ -6,8 +6,8 @@ import pytest
 from myia.abstract.data import AbstractValue
 from myia.infer.infnode import infer_graph
 from myia.parser import parse
-from myia.utils.info import enable_debug
 from myia.testing.common import A
+from myia.utils.info import enable_debug
 
 
 def mt(*testers):
