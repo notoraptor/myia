@@ -1,6 +1,7 @@
 from myia.testing.multitest import infer, mt
 
 from myia.testing.common import A
+from myia.abstract.map import MapError
 
 
 # Test `mt`
@@ -17,4 +18,14 @@ def test_sum(a, b):
 # Test `infer` alone
 @infer(A(int), A(int), result=A(int))
 def test_sum_2(a, b):
+    return a + b
+
+
+@infer(int, float, result=MapError)
+def test_sum_3(a, b):
+    return a + b
+
+
+@infer(int, float, result=Exception(".*Cannot merge.*"))
+def test_sum_4(a, b):
     return a + b

@@ -55,14 +55,29 @@ def infer(*args, result=None):
     args = tuple(
         arg if isinstance(arg, AbstractValue) else A(arg) for arg in args
     )
-    result = result if isinstance(result, AbstractValue) else A(result)
+
+    exc_type = None
+    exc_match = None
+    if not isinstance(result, AbstractValue):
+        if isinstance(result, Exception):
+            exc_type = type(result)
+            exc_match = str(result)
+        elif isinstance(result, type) and issubclass(result, Exception):
+            exc_type = result
+        else:
+            result = A(result)
 
     def deco(fn):
         def wrapper(*a, **k):
             with enable_debug():
                 graph = parse(fn)
-            g, ret_type = infer_graph(graph, args)
-            assert ret_type is result, f"Expected {result}, got {ret_type}"
+
+            if isinstance(result, AbstractValue):
+                _, ret_type = infer_graph(graph, args)
+                assert ret_type is result, f"Expected {result}, got {ret_type}"
+            else:
+                with pytest.raises(exc_type, match=exc_match):
+                    infer_graph(graph, args)
 
         return wrapper
 
